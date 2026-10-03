@@ -1,336 +1,385 @@
 {
-  "title": "Proposed three-set orchestration",
-  "status": "proposed",
-  "basis": "User attachment and currently inspected 6-1-sol-orch/SKILL.md",
-  "width": 3060,
-  "height": 1400,
+  "title": "Three separate SET sessions with shared evidence integration",
+  "status": "execution-design-with-tested-capacity-and-transfer",
+  "deployment": "three-session",
+  "width": 2600,
+  "height": 1680,
   "asset_manifest": "assets.json",
   "nodes": [
     {
-      "id": "set1-root",
+      "id": "chief-dispatch",
       "asset": "sol",
-      "x": 100,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set1-leader"
+      "x": 1225.0,
+      "y": 65,
+      "size": 150,
+      "agent_identity": "chief",
+      "role": "chief",
+      "optional": false,
+      "session": "chief-session"
+    },
+    {
+      "id": "set1-leader",
+      "asset": "sol",
+      "x": 378.0,
+      "y": 400,
+      "size": 144,
+      "agent_identity": "set1-leader",
+      "role": "leader",
+      "optional": false,
+      "session": "SESSION1"
     },
     {
       "id": "set1-explorer",
       "asset": "luna",
-      "x": 300,
-      "y": 400,
-      "size": 80,
-      "agent_identity": "set1-explorer"
+      "x": 189.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set1-explorer",
+      "role": "explorer",
+      "optional": false,
+      "session": "SESSION1"
     },
     {
       "id": "set1-researcher",
       "asset": "luna",
-      "x": 300,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set1-researcher"
+      "x": 394.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set1-researcher",
+      "role": "researcher",
+      "optional": false,
+      "session": "SESSION1"
     },
     {
       "id": "set1-worker",
       "asset": "sol",
-      "x": 300,
-      "y": 880,
-      "size": 80,
-      "agent_identity": "set1-worker"
+      "x": 599.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set1-worker",
+      "role": "worker",
+      "optional": false,
+      "session": "SESSION1"
     },
     {
-      "id": "set1-integrate",
-      "asset": "sol",
-      "x": 490,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set1-leader"
-    },
-    {
-      "id": "set1-review",
+      "id": "set1-reviewer",
       "asset": "astra",
-      "x": 660,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set1-review"
+      "x": 398.0,
+      "y": 920,
+      "size": 104,
+      "agent_identity": "set1-reviewer",
+      "role": "reviewer",
+      "optional": true,
+      "session": "SESSION1"
     },
     {
-      "id": "set1-finish",
+      "id": "set2-leader",
       "asset": "sol",
-      "x": 845,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set1-leader"
-    },
-    {
-      "id": "set2-root",
-      "asset": "sol",
-      "x": 1100,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set2-leader"
+      "x": 1228.0,
+      "y": 400,
+      "size": 144,
+      "agent_identity": "set2-leader",
+      "role": "leader",
+      "optional": false,
+      "session": "SESSION2"
     },
     {
       "id": "set2-explorer",
       "asset": "luna",
-      "x": 1300,
-      "y": 400,
-      "size": 80,
-      "agent_identity": "set2-explorer"
+      "x": 1039.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set2-explorer",
+      "role": "explorer",
+      "optional": false,
+      "session": "SESSION2"
     },
     {
       "id": "set2-researcher",
       "asset": "luna",
-      "x": 1300,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set2-researcher"
+      "x": 1244.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set2-researcher",
+      "role": "researcher",
+      "optional": false,
+      "session": "SESSION2"
     },
     {
       "id": "set2-worker",
       "asset": "sol",
-      "x": 1300,
-      "y": 880,
-      "size": 80,
-      "agent_identity": "set2-worker"
+      "x": 1449.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set2-worker",
+      "role": "worker",
+      "optional": false,
+      "session": "SESSION2"
     },
     {
-      "id": "set2-integrate",
-      "asset": "sol",
-      "x": 1490,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set2-leader"
-    },
-    {
-      "id": "set2-review",
+      "id": "set2-reviewer",
       "asset": "astra",
-      "x": 1660,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set2-review"
+      "x": 1248.0,
+      "y": 920,
+      "size": 104,
+      "agent_identity": "set2-reviewer",
+      "role": "reviewer",
+      "optional": true,
+      "session": "SESSION2"
     },
     {
-      "id": "set2-finish",
+      "id": "set3-leader",
       "asset": "sol",
-      "x": 1845,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set2-leader"
-    },
-    {
-      "id": "set3-root",
-      "asset": "sol",
-      "x": 2100,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set3-leader"
+      "x": 2078.0,
+      "y": 400,
+      "size": 144,
+      "agent_identity": "set3-leader",
+      "role": "leader",
+      "optional": false,
+      "session": "SESSION3"
     },
     {
       "id": "set3-explorer",
       "asset": "luna",
-      "x": 2300,
-      "y": 400,
-      "size": 80,
-      "agent_identity": "set3-explorer"
+      "x": 1889.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set3-explorer",
+      "role": "explorer",
+      "optional": false,
+      "session": "SESSION3"
     },
     {
       "id": "set3-researcher",
       "asset": "luna",
-      "x": 2300,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set3-researcher"
+      "x": 2094.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set3-researcher",
+      "role": "researcher",
+      "optional": false,
+      "session": "SESSION3"
     },
     {
       "id": "set3-worker",
       "asset": "sol",
-      "x": 2300,
-      "y": 880,
-      "size": 80,
-      "agent_identity": "set3-worker"
+      "x": 2299.0,
+      "y": 670,
+      "size": 112,
+      "agent_identity": "set3-worker",
+      "role": "worker",
+      "optional": false,
+      "session": "SESSION3"
     },
     {
-      "id": "set3-integrate",
-      "asset": "sol",
-      "x": 2490,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set3-leader"
-    },
-    {
-      "id": "set3-review",
+      "id": "set3-reviewer",
       "asset": "astra",
-      "x": 2660,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set3-review"
+      "x": 2098.0,
+      "y": 920,
+      "size": 104,
+      "agent_identity": "set3-reviewer",
+      "role": "reviewer",
+      "optional": true,
+      "session": "SESSION3"
     },
     {
-      "id": "set3-finish",
-      "asset": "sol",
-      "x": 2845,
-      "y": 640,
-      "size": 80,
-      "agent_identity": "set3-leader"
+      "id": "shared-json",
+      "asset": "json",
+      "x": 1235.0,
+      "y": 1250,
+      "size": 130,
+      "agent_identity": null,
+      "role": "shared-data",
+      "optional": false,
+      "session": null
     },
     {
-      "id": "chief-dispatch",
+      "id": "chief-integrate",
       "asset": "sol",
-      "x": 1475,
-      "y": 50,
-      "size": 110,
-      "agent_identity": "chief"
-    },
-    {
-      "id": "chief-consolidate",
-      "asset": "sol",
-      "x": 1475,
-      "y": 1190,
-      "size": 110,
-      "agent_identity": "chief"
+      "x": 1240.0,
+      "y": 1480,
+      "size": 120,
+      "agent_identity": "chief",
+      "role": "chief",
+      "optional": false,
+      "session": "chief-session"
     }
   ],
   "edges": [
     {
-      "source": "set1-root",
-      "target": "set1-explorer"
+      "source": "chief-dispatch",
+      "target": "set1-leader",
+      "kind": "create-session-same-wave"
+    },
+    {
+      "source": "set1-leader",
+      "target": "set1-explorer",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set1-explorer",
-      "target": "set1-integrate"
+      "target": "set1-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set1-root",
-      "target": "set1-researcher"
+      "source": "set1-leader",
+      "target": "set1-researcher",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set1-researcher",
-      "target": "set1-integrate"
+      "target": "set1-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set1-root",
-      "target": "set1-worker"
+      "source": "set1-leader",
+      "target": "set1-worker",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set1-worker",
-      "target": "set1-integrate"
+      "target": "set1-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set1-integrate",
-      "target": "set1-review",
-      "condition": "only when needed"
+      "source": "set1-leader",
+      "target": "set1-reviewer",
+      "kind": "optional-completed-artifact-review"
     },
     {
-      "source": "set1-review",
-      "target": "set1-finish"
+      "source": "set1-reviewer",
+      "target": "set1-leader",
+      "kind": "optional-review-result"
     },
     {
-      "source": "set1-integrate",
-      "target": "set1-finish",
-      "condition": "review not required"
+      "source": "set1-leader",
+      "target": "shared-json",
+      "kind": "atomic-versioned-publish"
+    },
+    {
+      "source": "shared-json",
+      "target": "set1-leader",
+      "kind": "peer-evidence-read"
     },
     {
       "source": "chief-dispatch",
-      "target": "set1-root"
+      "target": "set2-leader",
+      "kind": "create-session-same-wave"
     },
     {
-      "source": "set1-finish",
-      "target": "chief-consolidate"
-    },
-    {
-      "source": "set2-root",
-      "target": "set2-explorer"
+      "source": "set2-leader",
+      "target": "set2-explorer",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set2-explorer",
-      "target": "set2-integrate"
+      "target": "set2-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set2-root",
-      "target": "set2-researcher"
+      "source": "set2-leader",
+      "target": "set2-researcher",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set2-researcher",
-      "target": "set2-integrate"
+      "target": "set2-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set2-root",
-      "target": "set2-worker"
+      "source": "set2-leader",
+      "target": "set2-worker",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set2-worker",
-      "target": "set2-integrate"
+      "target": "set2-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set2-integrate",
-      "target": "set2-review",
-      "condition": "only when needed"
+      "source": "set2-leader",
+      "target": "set2-reviewer",
+      "kind": "optional-completed-artifact-review"
     },
     {
-      "source": "set2-review",
-      "target": "set2-finish"
+      "source": "set2-reviewer",
+      "target": "set2-leader",
+      "kind": "optional-review-result"
     },
     {
-      "source": "set2-integrate",
-      "target": "set2-finish",
-      "condition": "review not required"
+      "source": "set2-leader",
+      "target": "shared-json",
+      "kind": "atomic-versioned-publish"
+    },
+    {
+      "source": "shared-json",
+      "target": "set2-leader",
+      "kind": "peer-evidence-read"
     },
     {
       "source": "chief-dispatch",
-      "target": "set2-root"
+      "target": "set3-leader",
+      "kind": "create-session-same-wave"
     },
     {
-      "source": "set2-finish",
-      "target": "chief-consolidate"
-    },
-    {
-      "source": "set3-root",
-      "target": "set3-explorer"
+      "source": "set3-leader",
+      "target": "set3-explorer",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set3-explorer",
-      "target": "set3-integrate"
+      "target": "set3-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set3-root",
-      "target": "set3-researcher"
+      "source": "set3-leader",
+      "target": "set3-researcher",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set3-researcher",
-      "target": "set3-integrate"
+      "target": "set3-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set3-root",
-      "target": "set3-worker"
+      "source": "set3-leader",
+      "target": "set3-worker",
+      "kind": "parallel-child-dispatch"
     },
     {
       "source": "set3-worker",
-      "target": "set3-integrate"
+      "target": "set3-leader",
+      "kind": "child-result"
     },
     {
-      "source": "set3-integrate",
-      "target": "set3-review",
-      "condition": "only when needed"
+      "source": "set3-leader",
+      "target": "set3-reviewer",
+      "kind": "optional-completed-artifact-review"
     },
     {
-      "source": "set3-review",
-      "target": "set3-finish"
+      "source": "set3-reviewer",
+      "target": "set3-leader",
+      "kind": "optional-review-result"
     },
     {
-      "source": "set3-integrate",
-      "target": "set3-finish",
-      "condition": "review not required"
+      "source": "set3-leader",
+      "target": "shared-json",
+      "kind": "atomic-versioned-publish"
     },
     {
-      "source": "chief-dispatch",
-      "target": "set3-root"
+      "source": "shared-json",
+      "target": "set3-leader",
+      "kind": "peer-evidence-read"
     },
     {
-      "source": "set3-finish",
-      "target": "chief-consolidate"
+      "source": "shared-json",
+      "target": "chief-integrate",
+      "kind": "chief-verify-and-merge"
     }
   ],
-  "description": "One chief, three set leaders; repeated chief and leader cards are execution stages of the same agent. Astra is conditional. Independent work is dispatched in parallel subject to host limits.",
-  "disclaimer": "Proposed structure; no implementation or speedup measurement."
+  "basic_agent_count": 13,
+  "with_all_reviewers": 16,
+  "fast_required_for_all_agents": true,
+  "description": "Three independent session roots dispatch their children concurrently. Results return to leaders; each publishes to and reads from shared versioned JSON. The chief is shown twice but counted once. JSON is data, not an agent. Optional Astra reviews use completed artifacts.",
+  "disclaimer": "Capacity and cross-session shared-file transfer tested separately; no measured speedup or observed Fast-serving proof."
 }

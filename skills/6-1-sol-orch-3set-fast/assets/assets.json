@@ -22,5 +22,12 @@
     "revision": "1",
     "source": "Original explanatory artwork created for this repository, 2026-10-01",
     "license_note": "Apache-2.0; not an official OpenAI or model logo; no trademark affiliation claimed"
+  },
+  "json": {
+    "name": "JSON",
+    "path": "icons/json.svg",
+    "sha256": "71595549f972a18ab65501db1d13e1c35aae1ec639c215b4045bcc35e7fbe924",
+    "source": "Original explanatory glyph created for this diagram, 2026-10-03",
+    "license": "CC0-1.0; no brand mark"
   }
 }

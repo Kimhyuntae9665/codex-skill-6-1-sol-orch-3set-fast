@@ -1,4 +1,4 @@
 interface:
   display_name: "6.1 Sol Orch · 3 SET Fast"
-  short_description: "Three Fast agent sets with exclusive task ownership"
-  default_prompt: "Use $6-1-sol-orch-3set-fast to split this task into three non-overlapping sets, run all assigned models in Fast mode within host limits, and integrate and verify the results."
+  short_description: "Three parallel Fast sessions with shared evidence integration"
+  default_prompt: "Use $6-1-sol-orch-3set-fast to run three SETs in parallel with Fast required for every role, exchange source-backed findings through shared versioned JSON, and have the Sol chief verify and integrate results. Use separate SET chats only when I explicitly request new chats; otherwise use a supported single agent tree."

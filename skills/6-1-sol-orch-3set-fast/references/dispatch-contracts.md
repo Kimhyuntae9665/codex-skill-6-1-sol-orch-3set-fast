@@ -7,10 +7,14 @@ this global file; leaders return scope changes as proposals.
 
 ```json
 {
-  "version": 1,
+  "version": 2,
   "run_id": "example",
   "objective": "Deliver the requested account page",
-  "chief_write_scope": ["work/three-set/example/shared/"],
+  "execution_mode": "parallel-only",
+  "deployment": "three-session",
+  "capacity_total": 16,
+  "concurrent_reviewers": 0,
+  "chief_write_scope": ["work/three-set/example/plan.json", "work/three-set/example/shared/"],
   "shared_inputs": ["The agreed account API schema"],
   "sets": [
     {
@@ -22,7 +26,7 @@ this global file; leaders return scope changes as proposals.
       "outputs": ["src/api/account/handler.py"],
       "checks": ["API matches the agreed schema"],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     },
     {
       "id": "SET2",
@@ -33,7 +37,7 @@ this global file; leaders return scope changes as proposals.
       "outputs": ["src/ui/account/page.tsx"],
       "checks": ["Page handles agreed success and error states"],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     },
     {
       "id": "SET3",
@@ -44,15 +48,26 @@ this global file; leaders return scope changes as proposals.
       "outputs": ["docs/account/guide.md"],
       "checks": ["Guide matches agreed behavior"],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     }
   ]
 }
 ```
 
-This assumes the chief already settled the shared contract. If SET2/SET3
-instead needs SET1's finished output, include `SET1` in `depends_on` and hold
-dependent work until that artifact is accepted.
+All three SET `depends_on` arrays must be empty: teams start together, not in
+a completion chain. Settle interfaces or redesign dependent packages before
+launch. Artifact dependencies inside a SET belong in child assignments;
+unrelated work continues.
+
+`capacity_total` is available effective runtime capacity including the chief,
+not only a configured number. `concurrent_reviewers` is 0..3 and counts added
+Astra agents coexisting with the 13 basic agents. The checker rejects old
+plans, insufficient capacity and serial SET dependencies; it does not query
+the host. Record live launch/overlap evidence separately.
+
+The global `work/three-set/<run-id>/plan.json` is always reserved to the chief
+by the checker, even if omitted from the declared chief paths. Include it
+explicitly in the plan for clarity. Leaders only own their local assignments.
 
 Paths are literal workspace-relative files/directories, not globs. A scope
 reserves the path and descendants. The checker resolves aliases/symlinks and
@@ -75,12 +90,14 @@ Send the SET record, necessary shared decisions, relevant skill sections and:
 Role: SET2 leader, not chief; do not create three more sets.
 Model: gpt-6.1-sol; reasoning: medium; Fast required.
 Scope: SET2 contract only; exclude SET1/SET3 production files.
-Capacity: chief-granted maximum N child slots; request changes before spawn.
-Children: Luna explorer/high, Luna researcher/high, Sol worker/high as useful;
-conditional Astra reviewer/low. All require Fast; none delegate further.
-At most one live child per role; preserve the two-Luna/one-Sol composition.
+Launch: start Luna explorer/high, Luna researcher/high and Sol worker/high
+immediately on distinct ready tasks; do not await another SET or a whole
+child package before launching the others. All require Fast; none delegate.
+Preserve two Luna children and one Sol worker; optional Astra reviewer/low.
+The standard hierarchy has 13 agents; no set-by-set slot grants/throttle.
 Ownership: single live writer per file, including scratch outputs.
-Dependencies: wait for required evidence; reuse completed other-set results.
+Dependencies: accepted evidence for dependent operations; keep other ready
+branches active. Reuse results; do not serialize the whole package.
 Return: artifacts, changed files, checks/results, sources/uncertainty,
 actual model/tier evidence and confirmation children stopped writing.
 Unexpected overlap/dependency: report before expanding scope.
@@ -94,12 +111,18 @@ a model. If no tier parameter exists, follow runtime.md.
 Each child receives one task, exclusions, paths, read/write permissions,
 model/effort/Fast requirement, evidence, output and acceptance checks. Only
 the leader writes its assignments file. Entries record `task_id`, `work_key`,
-`agent_id`, `role`, `write_scope`, `state`, `depends_on`, and `checks`.
+`agent_id`, `parent_agent`, `role`, `write_scope`, `launched_at`, `state`,
+`depends_on`, and `checks`. Keep live snapshots/timestamps for overlap evidence.
 Children return results, not competing ledger edits. The leader checks every
 child scope is within its SET and does not overlap other live writers or its
 own edits. The global helper checks SET declarations, not actual worker edits.
 
-States: `queued → running → done`, plus `blocked` and `cancelled`. On handoff,
+States: `ready → running → done`, plus `blocked` and `cancelled`. Ready means
+prepared for the same dispatch wave, never awaiting another SET's completion.
+On handoff,
 stop/confirm the previous writer, inspect partial output, update/recheck the
 plan and then grant the new owner. Index returned results by work key for reuse.
-Use internal collaboration tools, not new sidebar chats, for coordination.
+Within each SET use internal collaboration tools. For explicitly requested
+three-session deployment, use the separate-root contracts in
+[three-session.md](three-session.md), absolute shared workspace paths and
+compact app wait snapshots. Chat identities are distinct from child agent paths.

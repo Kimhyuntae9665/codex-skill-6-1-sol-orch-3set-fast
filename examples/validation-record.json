@@ -1,25 +1,25 @@
 {
   "checked_on": "2026-10-03",
   "checks": {
-    "ownership_tests": 17,
-    "skill_frontmatter": "passed",
-    "UI_metadata": "passed",
-    "relative_links": "passed",
+    "tests_run": 33,
+    "tests_skipped": 1,
+    "test_result": "passed; Windows host could not create a directory symlink, so that one conditional test was skipped",
+    "coverage": [
+      "v2 parallel-only plans, required total capacity, optional reviewer counts, rejected SET completion chains",
+      "declared ownership, portable case/backslash/dot aliases, invalid absolute and alternate-stream paths",
+      "CLI valid/invalid/malformed JSON exit codes",
+      "sanitized historical evidence, topology arithmetic, unknown serving tier, public record privacy",
+      "skill relative links, original glyph hashes and license"
+    ],
+    "local_platform": "Windows",
+    "linux_execution": "not run locally; portable unittest suite is included in the existing Windows/Linux CI matrix",
     "original_icon_hashes": "passed",
     "checker_CLI_exit_codes": "valid=0, invalid=2"
   },
-  "independent_forward_simulation": {
-    "reviewer": "gpt-6-astra",
-    "reasoning": "low",
-    "scenarios": [
-      "Shared-schema API/UI/guide with four total slots",
-      "Twelve-company research with disjoint company pools",
-      "Known unsupported Luna Fast route"
-    ],
-    "method": "Dispatch and scheduling simulation; not live full-tree execution"
-  },
+  "historical_runtime_evidence": "verification-records.json; separate-root bounded idle-hold capacity and shared JSON integration observations",
   "not_measured": [
-    "Full 13-16 agent concurrent execution",
+    "Production completion across a full 13-16 agent hierarchy",
+    "16 spawned children within a single chat",
     "Task speedup",
     "Token savings",
     "Actual serving tiers"

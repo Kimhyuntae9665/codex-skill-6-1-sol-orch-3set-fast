@@ -1,136 +1,154 @@
 ---
 name: 6-1-sol-orch-3set-fast
-description: Coordinate substantial work with one GPT-6.1 Sol chief and three non-overlapping Sol/Luna sets, all requiring Fast mode, with optional Astra reviews. Use when the user requests this three-set hierarchy or authorizes parallel sets for independent work; do not add teams to a trivial task.
+description: Run substantial work through three simultaneous Sol/Luna agent sets in Fast mode, with one Sol chief and optional Astra reviews. Use for the complete three-set parallel hierarchy; never substitute staggered, sequential, or chief-only execution.
 ---
 
-# 6.1 Sol Orch — 3 SET Fast
+# 6.1 Sol Orch — 3 SET Fast, Parallel Only
 
-One chief owns global decomposition and integration. Three set leaders own
-distinct work packages. Preserve the approved [topology](assets/topology.png):
-chief → three parallel sets → same chief for final integration. Repeated Sol
-cards are stages of the same leader, not extra agents. Astra is conditional.
+Run one chief and THREE sets concurrently. The standard hierarchy has
+**13 distinct agents**: one chief + three Sol leaders + six Luna children +
+three Sol workers. Three optional Astra reviewers bring the total to 16 when
+needed. See the [topology](assets/topology.png).
 
-Invocation authorizes this agent workflow within the user's task. It does not
-authorize new sidebar chats, publication, submission, or unrelated configuration
-changes. Small tasks stay with the chief; do not invent three packages just to
-fill the diagram.
+The sets are simultaneous teams, not three rounds of one team.
+**No skill-imposed slot throttle, set queue, staggered schedule, sequential
+fallback, or reduced execution mode.** A host limit cannot be erased by a
+prompt: if the runtime cannot run the full hierarchy, report that the requested
+parallel execution is unavailable. Do not label a smaller run as this skill.
 
-## Roles: Fast required for every model
+The [three-session deployment](references/three-session.md) is the reference
+architecture: each SET leader is a separate chat root, and all three dispatch
+their children concurrently. Create those user-owned chats only when the human
+explicitly requests new chats. Otherwise use a single nested agent tree when
+its effective capacity and nesting support the full hierarchy. Never switch
+to new chats after a capacity error without that explicit request.
+Merely inspecting or editing this skill does not launch agents or chats.
+Invoking the workflow does not authorize publication, submission, messages to
+other chats, or host configuration changes.
+Use this workflow for substantial work that supplies three independent packages.
+Do not manufacture duplicate/busywork tasks to populate the graph.
+For the user's requested separate-session workflow, shared versioned JSON
+carries evidence between SETs and back to the chief. Read the
+[exchange contract](references/information-exchange.md) before dispatch.
 
-| Role | Model | Reasoning | Responsibility |
-| --- | --- | --- | --- |
-| Chief, one | `gpt-6.1-sol` | medium | Decompose, grant ownership and slots, resolve cross-set decisions, integrate and verify. |
-| SET 1–3 leader | `gpt-6.1-sol` | medium | Allocate bounded children, integrate its package and report evidence. |
-| Explorer, per set as useful | `gpt-6-luna` | high | Investigate a bounded code path; no production edits. |
-| Researcher, per set as useful | `gpt-6-luna` | high | Answer assigned questions with sources; no production edits. |
-| Worker, per set as useful | `gpt-6.1-sol` | high | Implement in owned files and run focused checks. |
-| Reviewer, only when needed | `gpt-6-astra` | low | Independently review completed work; report without editing. |
+## Model roles — Fast required throughout
 
-Fast is the service tier, not low reasoning or Ultrafast. Before spawning,
-inspect the active model, effective Fast setting, available models, nesting
-support, tool schema and remaining capacity. Read
-[runtime.md](references/runtime.md) for tier checks and scheduling. A skill
-cannot change the active chief model or raise a host-imposed capacity.
+| Role | Count | Model | Reasoning | Work |
+| --- | --- | --- | --- | --- |
+| Chief | 1 | `gpt-6.1-sol` | medium | Set interfaces, dispatch, integrate and verify. |
+| SET leaders | 3 | `gpt-6.1-sol` | medium | Dispatch each set's children and integrate its outputs. |
+| Explorer | 1 per SET | `gpt-6-luna` | high | Explore a distinct source/code/domain slice; no production edits. |
+| Researcher | 1 per SET | `gpt-6-luna` | high | Resolve distinct evidence questions with sources; no production edits. |
+| Worker | 1 per SET | `gpt-6.1-sol` | high | Implement or verify artifacts in its exclusive scope. |
+| Reviewer | Optional per SET | `gpt-6-astra` | low | Independently review completed outputs; no edits. |
 
-Require Fast for EVERY role. Apply a supported explicit Fast/priority option
-when exposed; otherwise use verified Fast parent/runtime configuration and
-host-supported inheritance. Never invent a spawn parameter. Track required,
-configured/requested, and observed tier separately. A request without telemetry
-does not prove the actual serving tier; disclose that uncertainty. If Fast is
-known disabled/unsupported, report the blocker before launching that role;
-do not silently substitute Standard or a different model.
+The public contract requires Sol 6.1/medium for the chief and all SET leaders.
+Pin leader effort through supported tool fields and record actual chief effort.
+The host selects the active chief; see runtime.md for runtime mismatches.
 
-## Chief: allocate before anyone starts
+Fast is the serving tier, not low reasoning. Inspect model availability, Fast
+configuration/inheritance, nesting support and effective runtime capacity using
+[runtime.md](references/runtime.md). Pin supported model/effort fields; use
+no/small history forks where full-history forks forbid overrides. Never invent
+a tier field. Record configured/requested and observed tier separately;
+configuration without telemetry does not prove actual Fast serving.
+Fast is mandatory for the chief, all three SET leaders and every Luna, Sol and
+Astra child. Verify the configured Fast route and `features.fast_mode = true`
+at each new root before spawning, inspect applicable overrides and preserve
+Fast inheritance. Do not continue a known Standard/disabled-Fast run or claim
+Fast merely because a prompt says so. Unknown server telemetry remains unknown.
 
-1. Inspect relevant instructions, inputs, current work and existing agents.
-   Identify independent units. Settle critical shared interfaces first.
+Inspect host configuration following runtime.md. Its example allows 16 spawned
+agents (17 including the chief), enough for the full topology and reviewers.
+Change configuration only with the host owner's explicit authorization and
+preserve higher existing values. Verify effective runtime limits separately;
+writing a config does not hot-reload active chats.
+
+## Launch the whole hierarchy without set-by-set waits
+
+1. Inspect inputs, instructions and existing agents. Settle shared interfaces
+   once. Divide the objective into three independent packages; partition
+   company/domain pools and research questions as well as files.
 2. Write `work/three-set/<run-id>/plan.json` using
-   [dispatch-contracts.md](references/dispatch-contracts.md). Use exactly three
-   set records for a genuine three-set task; blocked/unnecessary packages can
-   remain queued or be cancelled with reasons.
-3. Assign each set a distinct objective, work keys, read inputs, exclusive write
-   scopes, outputs, acceptance checks and dependencies. Partition search
-   questions/domain pools as well as code. Shared input reading is allowed;
-   repeated research or implementation objectives are not.
-4. Run `python <skill-dir>/scripts/check_plan.py <plan> --workspace <root>`.
-   Use an actually available Python 3.9+ interpreter; the helper uses only the
-   standard library. Resolve a host/bundled runtime if `python` is unavailable.
-   Correct conflicting declared paths, duplicate work keys, unowned outputs
-   and dependency cycles before dispatch. Review objective wording too: the
-   checker cannot detect semantic duplicates with different keys.
-5. Choose the honest execution mode from actual capacity. Give each leader
-   only its contract, necessary shared decisions, this role table, runtime
-   rules and exact slot grant. Briefly explain each set's ownership and whether
-   the three sets can actually run concurrently.
+   [dispatch-contracts.md](references/dispatch-contracts.md). Assign all sets
+   distinct work keys, exclusive scopes, outputs and checks. Record
+   `execution_mode: "parallel-only"`, actual `capacity_total`, and
+   `concurrent_reviewers` (0 at initial dispatch). Record `deployment` as
+   `three-session` for explicitly requested new SET chats, or `single-tree`
+   for internal subagents. Initial execution needs
+   13 total agents; this describes the architecture, not a skill-side throttle.
+3. Validate once with Python 3.9+:
+   `python <skill-dir>/scripts/check_plan.py <plan> --workspace <root>`.
+   Correct collisions, unowned outputs and set-to-set dependencies. The checker
+   does not prove semantic independence or query live capacity.
+4. Dispatch SET 1, SET 2 and SET 3 immediately in the same dispatch wave.
+   For explicitly requested `three-session` execution, create exactly three
+   local chats through the supported app tool and follow three-session.md.
+   Calls may be issued one after another, but **do not await one set's completion
+   before starting the next**. Each leader immediately starts its Explorer,
+   Researcher and Worker with ready, distinct initial tasks. The chief must not
+   do a whole package itself while leaving its SET queued.
+5. Inspect the live agent tree after dispatch. Record identities, parent links,
+   ownership, launch times and states. Claim full parallel operation only with
+   evidence that all three sets and their basic children launched and overlapped;
+   a plan or diagram alone is insufficient.
+6. Publish ready findings as versioned SET-owned files and read relevant peer
+   findings while other independent work continues. The chief validates run ID,
+   revision, hashes and provenance, then integrates results in its own output.
+   Peer artifact dependencies do not turn the three SETs into a completion chain.
 
-Only the chief writes the global plan or reassigns work between sets. Leaders
-request changes; they do not silently absorb another set's tasks.
+If spawning fails or effective capacity is too small, report the concrete
+blocker and partial tree. Do not claim success, drain SET 1 then start SET 2,
+retry a known limit repeatedly, or create unrequested chats/CLI processes.
+A three-session deployment is the reference separate-root
+architecture; its capacity must be verified separately for every new SET chat.
+Preserve partial results. Explain that supported host configuration/new runtime
+is needed before the requested parallel execution can proceed.
+After a partial launch failure, stop further dispatch and tell launched agents
+to stop new work and return a safe checkpoint. Confirm each writer and pending
+background tool has stopped or completed, record final states and preserve
+outputs before ending the blocked run. Do not leave orphaned writers running.
 
-## Each SET: work inside its grant
+## Each SET runs its children in parallel
 
-A leader MUST NOT run the chief procedure again or recursively create three
-more sets. It may spawn only its bounded explorer, researcher, worker and
-conditional reviewer. These children do not delegate further.
-Keep at most one live agent in each role per SET: two Luna roles, one Sol
-worker, and one conditional Astra. Do not replace the Sol worker with a third
-Luna or multiply researchers to fill spare slots. Split successive work units
-inside these role limits and reuse the assigned agents where supported.
+A leader is not another chief: do not recursively create three more sets.
+Children do not delegate further. Preserve the defined roles and models.
+Each standard set runs one Explorer, one Researcher and one Worker concurrently;
+the role composition is the requested topology, not a low-capacity fallback.
 
-- Give each child one objective, exclusions, exact files/read-only scope,
-  necessary inputs, expected evidence, checks, model, reasoning and Fast
-  requirement. Pin model/effort through supported tool fields. If full-history
-  forks forbid overrides, use a scoped contract with no fork or a supported
-  small fork. Do not copy irrelevant history.
-- The leader alone maintains
-  `work/three-set/<run-id>/set-N/assignments.json`. Record child task keys,
-  agent identities, scopes, dependencies and state. One live writer per file,
-  including scratch outputs. Leaders do not edit worker-owned files while
-  those workers own them. Validate child scopes stay inside this SET's scope
-  and do not overlap other live writers; the global helper checks SET scopes.
-- Explorer and researcher may work concurrently on distinct questions.
-  Implementation dependent on their evidence waits for that evidence; diagram
-  branches do not justify racing dependent work.
-- Reuse completed results by work key before searching or implementing again.
-  Independent review intentionally rechecks a result, not its implementation.
-- Request scope/slot changes before spawning or touching other SET files.
-  Report unmet dependencies; do not redo the supplying set's work.
-- Request Astra only for consequential security, integrity, concurrency,
-  compatibility or cross-component risk, or concrete unresolved concerns.
-  Finish worker edits and obtain a review slot first. Address material findings
-  and verify fixes. No standing tester role.
-- Return outputs, changed files, checks/results, sources, uncertainty, actual
-  model/tier evidence and child completion status. Confirm children no longer
-  write before handing ownership to the chief.
+- Give each child one objective, exclusions, read inputs, exclusive write paths,
+  checks, model, reasoning and Fast requirement. Keep prompts concise; do not
+  copy irrelevant history or repeat completed work.
+- Only the leader writes `set-N/assignments.json`: work keys, agent identities,
+  parent links, scopes, launch/state evidence and results.
+- Give the Worker useful ready work from dispatch: implementation against an
+  agreed contract, an independent artifact, or verification of existing evidence.
+  Forward findings as they arrive; do not make it wait for both Luna roles to
+  finish their entire package before starting.
+- Real artifact dependencies still apply: dependent operations use accepted
+  evidence while unrelated branches continue immediately. Redesign a SET that
+  depends entirely on another SET before launching. Do not create a serial SET
+  chain or race missing data merely to claim concurrency.
+- Request Astra only for consequential risk or concrete unresolved concerns.
+  Reviews use completed artifacts; independent ready reviews can run together.
+  All basic children and three added reviewers need 16 total live threads if
+  they coexist. Check actual capacity; never throttle other SETs for a review.
+- Return outputs, changes, checks, sources, uncertainty, model/tier evidence
+  and child states. Confirm writers finished before ownership handoff.
 
-## Global ownership and capacity
+## Parallel efficiency and ownership
 
-All sets share a workspace. Canonicalize paths; case/alias differences are not
-different ownership. Serialize shared files instead of assigning simultaneous
-writers different line ranges. Use distinct set-local scratch directories.
-Shared configs, schemas, browser forms, databases, environments and services
-also need one explicit owner; a path checker does not lock external resources.
+Each research question and output has one owner. Shared reading is allowed;
+duplicate implementation/research is not. Canonicalize paths, use set-local
+scratch and keep one live writer per file/resource. Shared configs, forms,
+databases and services also need an owner. Serialize only an actual shared
+mutation; never serialize entire sets because of it.
 
-Before reassigning: stop the previous writer, wait for acknowledgement, check
-partial work/background tools, update and recheck the plan, then grant the new
-owner. An interrupted turn alone does not prove a background tool stopped.
-Do not repeat completed work without new evidence.
+Keep all ready independent work active. The chief integrates outputs as they
+arrive, reuses results by work key and gives cross-set fixes to one owner.
+Before reassigning ownership, confirm the previous writer/background operation
+stopped and update the plan. Interrupted turns alone do not prove tools stopped.
 
-The chief grants slots centrally. Leaders cannot independently consume all
-capacity. Never fill every slot with waiting leaders and leave none for their
-workers. Regrant only after the host confirms available capacity. Idle/done
-threads may occupy open-thread limits; reuse permitted agents where possible.
-If closing/releasing is unavailable, use actual remaining capacity and report
-the reduced mode. Do not loop on rejected spawns or bypass limits with new
-chats/CLI processes.
-
-## Integrate and finish
-
-The chief joins returned outputs and checks dependency contracts. Cross-set
-repairs go to one owner or to the chief after acknowledged handoff; do not
-make all three sets repair the same issue. Run meaningful integration checks
-proportional to the changes, reusing valid focused results.
-
-Confirm required agents/writers are finished and inspect final artifacts or
-diffs. Report outcome, checks, concerns, actual concurrency mode and material
-Fast/model uncertainty. Three sets do not prove a threefold speedup; only
-measured elapsed time can support that claim.
+Inspect artifacts/diffs and run proportionate integration checks. Report the
+result, actual simultaneous counts, launch/overlap evidence and Fast/model
+uncertainty. Do not infer measured speedup from the number of agents.

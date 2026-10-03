@@ -1,18 +1,49 @@
-# Runtime and scheduling
+# Runtime — complete parallel hierarchy only
 
-Read before dispatch and recheck each run. Skill text is not host configuration.
+## Required topology and runtime evidence
+
+Standard launch: chief 1 + leaders 3 + Luna children 6 + Sol workers 3 =
+**13 total threads / 12 spawned threads**. With three optional Astra reviewers
+coexisting, it is 16 total / 15 spawned. The skill imposes no lower concurrency
+cap and never limits ready work to one SET at a time.
+
+Inspect effective capacity, existing agents, the counting rule and
+chief → leader → child nesting support before launch. Normalize evidence to
+`capacity_total`, including the chief. A configured number is a request, not
+proof of runtime capacity. Some hosts count open idle/finished threads too.
+
+There is **no reduced-capacity execution table**. If fewer than 13 total threads
+are available, nesting is unavailable, or required models/Fast cannot run,
+report that this hierarchy cannot start. Do not choose sequential/staggered/
+chief-only operation or a flattened topology on the user's behalf. Record
+partial failures honestly; do not create unrequested chats or CLI processes.
+For explicitly requested three-session deployment, follow
+[three-session.md](three-session.md). Each SET needs four total local slots
+for its leader and basic children, or five with its reviewer. This is independent
+of the chief's old chat limit. Never substitute aggregate slots for a SET's
+actual local capacity.
+
+Calls need not be literally simultaneous. Dispatch them without completion
+waits between SETs so all three teams overlap. Confirm with the live tree,
+child records and timestamps. Thirteen planned agents do not prove 13 active
+agents, nor do agents launched in unrelated waves.
 
 ## Fast for every role
 
-`service_tier = "fast"` is the documented Codex setting, mapped to request
-value `priority`. Supported existing `priority` settings may already request
-Fast. Inspect thread overrides, not just config defaults, and supported tiers
-for the requested models. Reasoning effort is independent of speed tier.
+`service_tier = "fast"` is the documented Codex Fast setting; request value
+`priority` is also supported. Inspect effective thread overrides and parent
+inheritance. Reasoning effort is independent of the tier.
+Require `[features].fast_mode = true` explicitly for this workflow.
+Check every separate SET root's global/project/profile/session settings before
+child dispatch. New chats are independent roots; the chief's current tier is
+not proof of their tier. Child model overrides must preserve the root's Fast
+route; inspect selected custom-agent files for tier overrides where applicable.
 
-Apply an explicit Fast option when the host exposes one. When the collaboration
-schema has only model/effort fields, do not invent a `service_tier`, `fast`, or
-`mode` argument. Use supported Fast configuration/inheritance and record
-evidence. Saying "Fast" in a prompt cannot enable it.
+Use explicit tier options only if the tool schema supports them. Where
+collaboration exposes model/effort only, use verified configured inheritance;
+never invent `service_tier`, `fast` or `mode` spawn fields. A prompt cannot
+enable Fast. Known unavailable Fast is a blocker; unknown actual serving tier
+must be disclosed rather than invented.
 
 Record each agent separately, for example:
 
@@ -22,75 +53,54 @@ Record each agent separately, for example:
  "observed_tier":null}
 ```
 
-`null` means unobservable, not Standard and not verified Fast. A known downgrade
-or unsupported Fast role must be reported and further work held until a
-supported Fast route exists; no silent Standard fallback. Continue other
-independent available work. Root model/effort are selected in the host; report
-a mismatch instead of claiming the pictured topology ran. The active tool
-schema is authoritative for parameters/model IDs.
+The host selects the chief model/effort; a skill cannot change the active
+chief. This public contract requires Sol 6.1/medium for the chief and every
+SET leader. Report a chief model/effort mismatch before dispatch and use a
+supported host selection/new runtime. No installation-specific exception or
+past user's approval transfers to another host owner.
+All basic roles require the same Fast policy.
 
-## Capacity
+## Host configuration for the complete topology
 
-Normalize to `C`: total usable simultaneous/open threads INCLUDING the chief.
-Account for existing threads and the host's counting rule. Modern Codex's
-`agents.max_concurrent_threads_per_session` counts spawned threads EXCLUDING
-the primary; its `max_threads` legacy alias has the same meaning in current
-documentation. The host may enforce a lower cap than a config value.
-
-| Total C | Execution mode |
-| --- | --- |
-| 13+ | Chief + 3 leaders + up to 3 workers each; only useful, ready roles. |
-| 7–12 | Three leaders; bounded worker grants with at least one worker slot per active set. |
-| 3–6 | Stagger sets, keeping one worker slot per active leader. At C=4: chief + one leader + at most two children. |
-| 2 | Chief + one leader who works directly; not the full pictured hierarchy. |
-| 1/no delegation | Chief-only reduced execution; retain decomposition and report it. |
-
-Full basic fan-out uses 13 total. Three simultaneous additional reviewers would
-use 16; normally reuse/release finished worker capacity before review.
-Each SET has at most one explorer, one researcher and one worker live. The
-13-thread figure is a ceiling for that composition, not permission to turn
-all nine worker slots into Luna researchers. Leave unneeded roles unused.
-
-The chief issues each leader a global slot grant: maximum children under the
-host's counting rule, roles and release condition. Before each spawn, confirm
-the grant. Only regrant after actual availability is confirmed. Finishing,
-sleeping or interrupting may not close a thread. Use an actual host close tool
-if provided; do not invent one. If none exists, reuse permitted agents/roles
-or work within remaining capacity and disclose the limitation.
-
-The exact tree needs chief → leader → child nesting support. If the host
-rejects that depth, the chief can host workers directly under SET contracts,
-but must announce the flattened tree. Do not claim the exact hierarchy or
-repeatedly retry a known rejection.
-
-## Optional host fragment; not auto-applied
-
-This fragment expresses Fast and up to 15 spawned threads (16 total) on a
-supported current Codex host. These settings belong in host config, NOT skill
-`agents/openai.yaml`. Check host support and existing sections before an
-authorized config change; never overwrite unrelated settings or add obsolete
-depth keys from old examples.
+The supported setting counts spawned threads EXCLUDING the primary:
 
 ```toml
-service_tier = "fast"
+service_tier = "priority"
 
 [features]
 fast_mode = true
 
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 15
+max_concurrent_threads_per_session = 16
 ```
 
-This does not override a session's hard limit. Verify effective capacity after
-any host restart/new session. Creating this skill does not apply this optional
-global config change.
+This user-global default allows up to 16 spawned agents plus the primary
+(17 total). The three-set topology uses 12 basic spawned agents, or 15 with
+three optional reviewers; the remaining capacity is headroom, not a required
+extra role. This provides room for the full topology and reviewers. It is
+not a skill-side dispatch throttle or proof of unlimited capacity. Preserve
+existing higher values. Do not invent zero, negative, infinity or undocumented
+depth settings as an unlimited mode.
 
-## Official sources checked 2026-10-03
+Modify host configuration only when authorized and preserve unrelated keys.
+Changes may need a new runtime/app restart; already-running chats can retain
+earlier hard limits. Recheck tool-advertised capacity after reload. Do not
+interrupt or restart other active chats automatically.
 
-- [Speed and supported Fast models](https://learn.chatgpt.com/docs/agent-configuration/speed)
-- [Configuration: service tier and limits](https://learn.chatgpt.com/docs/config-file/config-reference)
-- [Subagents and configuration inheritance](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+Read the applicable global/project/profile/session settings. The sample
+above is an opt-in configuration, not permission to edit or automatically
+restore global defaults. Any host change requires that owner's explicit
+authorization; preserve larger values and unrelated keys and validate the TOML.
+Inspect project/profile/session overrides where applicable and report any
+lower effective limit. Do not substitute the configured 17 total for an
+actually advertised lower runtime limit.
 
-Documentation support alone does not establish this account's entitlement or
-the serving tier of a particular request. Check runtime evidence.
+## Official references checked 2026-10-03
+
+- [Configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
+- [Subagents and inheritance](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+- [Fast speed setting](https://learn.chatgpt.com/docs/agent-configuration/speed)
+
+Configuration/documentation does not establish a running session's actual
+serving tier or effective capacity.

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Check declared three-set ownership and dependencies; no runtime locks."""
+"""Check complete parallel dispatch and ownership; no live runtime queries."""
 import argparse
 import json
 import re
 import sys
 from pathlib import Path
 
-STATES = {'queued', 'running', 'blocked', 'done', 'cancelled'}
+STATES = {'ready', 'running', 'blocked', 'done', 'cancelled'}
 IDS = {'SET1', 'SET2', 'SET3'}
 
 
@@ -64,12 +64,24 @@ def validate(plan, workspace):
 
     if not isinstance(plan, dict):
         return ['plan must be a JSON object']
-    if type(plan.get('version')) is not int or plan['version'] != 1:
-        errors.append('version must be 1')
+    if type(plan.get('version')) is not int or plan['version'] != 2:
+        errors.append('version must be 2; legacy scheduling plans must be revised')
+    if plan.get('execution_mode') != 'parallel-only':
+        errors.append('execution_mode must be parallel-only; no sequential fallback')
+    reviewers = plan.get('concurrent_reviewers')
+    if type(reviewers) is not int or not 0 <= reviewers <= 3:
+        errors.append('concurrent_reviewers must be an integer from 0 to 3')
+        reviewers = 0
+    capacity = plan.get('capacity_total')
+    required = 13 + reviewers
+    if type(capacity) is not int or capacity < required:
+        errors.append(f'capacity_total must provide at least {required} total agents; full parallel dispatch unavailable')
     for field in ('run_id', 'objective'):
         if not isinstance(plan.get(field), str) or not plan[field].strip():
             errors.append(f'{field} must be nonempty')
     reserve('chief', string_list(plan, 'chief_write_scope', 'chief', allow_empty=True))
+    if isinstance(plan.get('run_id'), str) and plan['run_id'].strip():
+        reserve('chief', [f"work/three-set/{plan['run_id']}/plan.json"])
     records = plan.get('sets')
     if not isinstance(records, list) or len(records) != 3:
         return errors + ['sets must contain exactly SET1, SET2, SET3']
@@ -100,6 +112,8 @@ def validate(plan, workspace):
                 errors.append(f'duplicate work key: {key} ({keys[canonical]} / {ident})')
             keys[canonical] = ident
         deps = string_list(entry, 'depends_on', ident, allow_empty=True)
+        if deps:
+            errors.append(f'{ident}: SET completion dependencies serialize teams; redesign for parallel launch')
         dependencies[ident] = deps
         for dep in deps:
             if dep not in IDS or dep == ident:

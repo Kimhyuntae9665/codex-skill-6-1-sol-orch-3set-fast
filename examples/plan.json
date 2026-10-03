@@ -1,8 +1,13 @@
 {
-  "version": 1,
+  "version": 2,
   "run_id": "example",
   "objective": "Deliver the requested account page",
+  "execution_mode": "parallel-only",
+  "deployment": "three-session",
+  "capacity_total": 16,
+  "concurrent_reviewers": 0,
   "chief_write_scope": [
+    "work/three-set/example/plan.json",
     "work/three-set/example/shared/"
   ],
   "shared_inputs": [
@@ -30,7 +35,7 @@
         "API matches the agreed schema"
       ],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     },
     {
       "id": "SET2",
@@ -52,7 +57,7 @@
         "Page handles agreed success and error states"
       ],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     },
     {
       "id": "SET3",
@@ -74,7 +79,7 @@
         "Guide matches agreed behavior"
       ],
       "depends_on": [],
-      "state": "queued"
+      "state": "ready"
     }
   ]
 }

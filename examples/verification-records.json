@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "checked_on": "2026-10-03",
+  "record_type": "sanitized-historical-observation",
+  "provenance": {
+    "evidence_level": "verified_local_source",
+    "capacity_source_record": "three-session-capacity-test.json",
+    "integration_source_record": "session-integration-result.json",
+    "raw_sources_public": false,
+    "sanitization": "Selected counts and verification results only; private identities, personal paths and nonce values omitted. Raw local sources were read directly during release preparation."
+  },
+  "capacity_experiment": {
+    "deployment": "three-session",
+    "chief_count": 1,
+    "set_root_count": 3,
+    "child_count": 12,
+    "total_active_test_agents": 16,
+    "new_set_roots_advertised_total_slots": [
+      17,
+      17,
+      17
+    ],
+    "old_chief_advertised_total_slots": 4,
+    "overlap_hold_window_seconds": 35.131341,
+    "cleanup_verified": true,
+    "limitations": [
+      "Bounded idle-hold creation/concurrency experiment; no speed benchmark.",
+      "Does not prove 16 spawned children within a single chat.",
+      "Requested child model overrides; observed serving tier unavailable.",
+      "Per-root capacity can change; recheck on future launches."
+    ],
+    "method": "bounded-idle-hold",
+    "children_per_set": [
+      4,
+      4,
+      4
+    ],
+    "speed_benchmark": false
+  },
+  "information_integration_experiment": {
+    "information_transfer_verified": true,
+    "receiver_receipt_verified": true,
+    "three_set_integration_verified": true,
+    "chief_independent_verification": true,
+    "merged_fact_count": 11,
+    "source_nonces_match": true,
+    "source_byte_hashes_match": true,
+    "source_provenance_retained": true,
+    "automatic_conversation_history_shared": false,
+    "fast_configured_tier": "priority",
+    "fast_feature_enabled": true,
+    "observed_serving_tier": null,
+    "new_subagents_created_this_test": 0,
+    "transport": "shared local versioned JSON",
+    "limitations": [
+      "Existing SET chats were resumed; no new subagents in this integration test.",
+      "No automatic history sharing or cross-host transport was tested.",
+      "Configuration establishes the requested Fast route; observed server serving tier remains unavailable."
+    ]
+  }
+}
