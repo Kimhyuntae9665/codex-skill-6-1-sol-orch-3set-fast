@@ -56,7 +56,7 @@ artifacts. With all reviewers present, the whole deployment is 1 chief +
 ## Capacity experiment, 2026-10-03
 
 These are historical local observations, summarized in the sanitized
-[verification records](../../../examples/verification-records.json). Raw private
+[verification records](https://github.com/Kimhyuntae9665/codex-skill-6-1-sol-orch-3set-fast/blob/main/examples/verification-records.json). Raw private
 records are not distributed; summaries omit personal paths and chat identities.
 
 Three newly created local chats each advertised 17 total slots and successfully
