@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "run_id": "example",
+  "objective": "Deliver the requested account page",
+  "chief_write_scope": [
+    "work/three-set/example/shared/"
+  ],
+  "shared_inputs": [
+    "The agreed account API schema"
+  ],
+  "sets": [
+    {
+      "id": "SET1",
+      "objective": "Implement the account API",
+      "work_keys": [
+        "implementation:account-api",
+        "research:account-auth"
+      ],
+      "read_inputs": [
+        "src/shared/account-schema.json"
+      ],
+      "write_scope": [
+        "src/api/account/",
+        "work/three-set/example/set-1/"
+      ],
+      "outputs": [
+        "src/api/account/handler.py"
+      ],
+      "checks": [
+        "API matches the agreed schema"
+      ],
+      "depends_on": [],
+      "state": "queued"
+    },
+    {
+      "id": "SET2",
+      "objective": "Implement the account UI against the agreed schema",
+      "work_keys": [
+        "implementation:account-ui"
+      ],
+      "read_inputs": [
+        "src/shared/account-schema.json"
+      ],
+      "write_scope": [
+        "src/ui/account/",
+        "work/three-set/example/set-2/"
+      ],
+      "outputs": [
+        "src/ui/account/page.tsx"
+      ],
+      "checks": [
+        "Page handles agreed success and error states"
+      ],
+      "depends_on": [],
+      "state": "queued"
+    },
+    {
+      "id": "SET3",
+      "objective": "Write the user guide from the agreed behavior",
+      "work_keys": [
+        "documentation:account-guide"
+      ],
+      "read_inputs": [
+        "src/shared/account-schema.json"
+      ],
+      "write_scope": [
+        "docs/account/",
+        "work/three-set/example/set-3/"
+      ],
+      "outputs": [
+        "docs/account/guide.md"
+      ],
+      "checks": [
+        "Guide matches agreed behavior"
+      ],
+      "depends_on": [],
+      "state": "queued"
+    }
+  ]
+}

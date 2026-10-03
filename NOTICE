@@ -1,0 +1,24 @@
+6.1 Sol Orch - 3 SET Fast
+Public distribution maintained by Kimhyuntae9665, 2026.
+
+Derived from the local 6-1-sol-orch skill and its public distribution:
+  Kimhyuntae9665/codex-skill-6-1-sol-orch
+  https://github.com/Kimhyuntae9665/codex-skill-6-1-sol-orch
+
+The original skill was developed from the orchestration approach in:
+  donvito/codex-astra-luna-orchestrator
+  https://github.com/donvito/codex-astra-luna-orchestrator
+  Base commit: f1de1b8729c8ccfb7978321b4764c58bd34c8493
+  License: Apache License 2.0
+
+This derivative adds one Sol chief over three bounded Sol/Luna sets,
+Fast requirements for every model role, global dispatch ownership,
+work-key and path conflict validation, capacity grants, and acknowledged
+handoffs. The public package adds Korean/English documentation, portable
+ownership tests, an example dispatch plan, and original explanatory diagrams.
+
+The sun, crescent and star glyphs were originally created for the
+6-1-sol-orch distribution in 2026. They are not official model logos.
+Their source notes and hashes are retained in the asset manifest.
+
+This community project is not affiliated with or endorsed by OpenAI.

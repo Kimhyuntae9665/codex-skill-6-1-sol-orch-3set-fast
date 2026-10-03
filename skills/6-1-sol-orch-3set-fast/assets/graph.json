@@ -1,0 +1,336 @@
+{
+  "title": "Proposed three-set orchestration",
+  "status": "proposed",
+  "basis": "User attachment and currently inspected 6-1-sol-orch/SKILL.md",
+  "width": 3060,
+  "height": 1400,
+  "asset_manifest": "assets.json",
+  "nodes": [
+    {
+      "id": "set1-root",
+      "asset": "sol",
+      "x": 100,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set1-leader"
+    },
+    {
+      "id": "set1-explorer",
+      "asset": "luna",
+      "x": 300,
+      "y": 400,
+      "size": 80,
+      "agent_identity": "set1-explorer"
+    },
+    {
+      "id": "set1-researcher",
+      "asset": "luna",
+      "x": 300,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set1-researcher"
+    },
+    {
+      "id": "set1-worker",
+      "asset": "sol",
+      "x": 300,
+      "y": 880,
+      "size": 80,
+      "agent_identity": "set1-worker"
+    },
+    {
+      "id": "set1-integrate",
+      "asset": "sol",
+      "x": 490,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set1-leader"
+    },
+    {
+      "id": "set1-review",
+      "asset": "astra",
+      "x": 660,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set1-review"
+    },
+    {
+      "id": "set1-finish",
+      "asset": "sol",
+      "x": 845,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set1-leader"
+    },
+    {
+      "id": "set2-root",
+      "asset": "sol",
+      "x": 1100,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set2-leader"
+    },
+    {
+      "id": "set2-explorer",
+      "asset": "luna",
+      "x": 1300,
+      "y": 400,
+      "size": 80,
+      "agent_identity": "set2-explorer"
+    },
+    {
+      "id": "set2-researcher",
+      "asset": "luna",
+      "x": 1300,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set2-researcher"
+    },
+    {
+      "id": "set2-worker",
+      "asset": "sol",
+      "x": 1300,
+      "y": 880,
+      "size": 80,
+      "agent_identity": "set2-worker"
+    },
+    {
+      "id": "set2-integrate",
+      "asset": "sol",
+      "x": 1490,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set2-leader"
+    },
+    {
+      "id": "set2-review",
+      "asset": "astra",
+      "x": 1660,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set2-review"
+    },
+    {
+      "id": "set2-finish",
+      "asset": "sol",
+      "x": 1845,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set2-leader"
+    },
+    {
+      "id": "set3-root",
+      "asset": "sol",
+      "x": 2100,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set3-leader"
+    },
+    {
+      "id": "set3-explorer",
+      "asset": "luna",
+      "x": 2300,
+      "y": 400,
+      "size": 80,
+      "agent_identity": "set3-explorer"
+    },
+    {
+      "id": "set3-researcher",
+      "asset": "luna",
+      "x": 2300,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set3-researcher"
+    },
+    {
+      "id": "set3-worker",
+      "asset": "sol",
+      "x": 2300,
+      "y": 880,
+      "size": 80,
+      "agent_identity": "set3-worker"
+    },
+    {
+      "id": "set3-integrate",
+      "asset": "sol",
+      "x": 2490,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set3-leader"
+    },
+    {
+      "id": "set3-review",
+      "asset": "astra",
+      "x": 2660,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set3-review"
+    },
+    {
+      "id": "set3-finish",
+      "asset": "sol",
+      "x": 2845,
+      "y": 640,
+      "size": 80,
+      "agent_identity": "set3-leader"
+    },
+    {
+      "id": "chief-dispatch",
+      "asset": "sol",
+      "x": 1475,
+      "y": 50,
+      "size": 110,
+      "agent_identity": "chief"
+    },
+    {
+      "id": "chief-consolidate",
+      "asset": "sol",
+      "x": 1475,
+      "y": 1190,
+      "size": 110,
+      "agent_identity": "chief"
+    }
+  ],
+  "edges": [
+    {
+      "source": "set1-root",
+      "target": "set1-explorer"
+    },
+    {
+      "source": "set1-explorer",
+      "target": "set1-integrate"
+    },
+    {
+      "source": "set1-root",
+      "target": "set1-researcher"
+    },
+    {
+      "source": "set1-researcher",
+      "target": "set1-integrate"
+    },
+    {
+      "source": "set1-root",
+      "target": "set1-worker"
+    },
+    {
+      "source": "set1-worker",
+      "target": "set1-integrate"
+    },
+    {
+      "source": "set1-integrate",
+      "target": "set1-review",
+      "condition": "only when needed"
+    },
+    {
+      "source": "set1-review",
+      "target": "set1-finish"
+    },
+    {
+      "source": "set1-integrate",
+      "target": "set1-finish",
+      "condition": "review not required"
+    },
+    {
+      "source": "chief-dispatch",
+      "target": "set1-root"
+    },
+    {
+      "source": "set1-finish",
+      "target": "chief-consolidate"
+    },
+    {
+      "source": "set2-root",
+      "target": "set2-explorer"
+    },
+    {
+      "source": "set2-explorer",
+      "target": "set2-integrate"
+    },
+    {
+      "source": "set2-root",
+      "target": "set2-researcher"
+    },
+    {
+      "source": "set2-researcher",
+      "target": "set2-integrate"
+    },
+    {
+      "source": "set2-root",
+      "target": "set2-worker"
+    },
+    {
+      "source": "set2-worker",
+      "target": "set2-integrate"
+    },
+    {
+      "source": "set2-integrate",
+      "target": "set2-review",
+      "condition": "only when needed"
+    },
+    {
+      "source": "set2-review",
+      "target": "set2-finish"
+    },
+    {
+      "source": "set2-integrate",
+      "target": "set2-finish",
+      "condition": "review not required"
+    },
+    {
+      "source": "chief-dispatch",
+      "target": "set2-root"
+    },
+    {
+      "source": "set2-finish",
+      "target": "chief-consolidate"
+    },
+    {
+      "source": "set3-root",
+      "target": "set3-explorer"
+    },
+    {
+      "source": "set3-explorer",
+      "target": "set3-integrate"
+    },
+    {
+      "source": "set3-root",
+      "target": "set3-researcher"
+    },
+    {
+      "source": "set3-researcher",
+      "target": "set3-integrate"
+    },
+    {
+      "source": "set3-root",
+      "target": "set3-worker"
+    },
+    {
+      "source": "set3-worker",
+      "target": "set3-integrate"
+    },
+    {
+      "source": "set3-integrate",
+      "target": "set3-review",
+      "condition": "only when needed"
+    },
+    {
+      "source": "set3-review",
+      "target": "set3-finish"
+    },
+    {
+      "source": "set3-integrate",
+      "target": "set3-finish",
+      "condition": "review not required"
+    },
+    {
+      "source": "chief-dispatch",
+      "target": "set3-root"
+    },
+    {
+      "source": "set3-finish",
+      "target": "chief-consolidate"
+    }
+  ],
+  "description": "One chief, three set leaders; repeated chief and leader cards are execution stages of the same agent. Astra is conditional. Independent work is dispatched in parallel subject to host limits.",
+  "disclaimer": "Proposed structure; no implementation or speedup measurement."
+}
